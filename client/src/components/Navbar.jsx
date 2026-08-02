@@ -1,12 +1,13 @@
-
 import { Link } from "react-router-dom";
 
-export default function Navbar() {
+function Navbar() {
   return (
-      <nav style={{ display: "flex", gap: "10px" }}>
-            <Link to="/">Home</Link>
-                  <Link to="/login">Login</Link>
-                        <Link to="/dashboard">Dashboard</Link>
-                            </nav>
-                              );
-                              }
+    <nav aria-label="Primary" style={{ display: "flex", gap: 12, padding: 16 }}>
+      <Link to="/">Home</Link>
+      <Link to="/login">Login</Link>
+      <Link to="/dashboard">Dashboard</Link>
+    </nav>
+  );
+}
+
+export default Navbar;
