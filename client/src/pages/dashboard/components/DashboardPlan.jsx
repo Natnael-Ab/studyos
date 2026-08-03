@@ -1,10 +1,22 @@
-import { Badge, Progress, SectionHeader, Surface } from "../../../components/ui";
+import { useMemo } from "react";
+import { Badge, EmptyState, Progress, SectionHeader, Surface } from "../../../components/ui";
 import { buildStudySnapshot } from "../../../domain/studyPlanner";
-import { studySeed } from "../../../data/studySeed";
-
-const snapshot = buildStudySnapshot(studySeed);
+import { useStudyData } from "../../../hooks/useStudyData";
 
 function DashboardPlan() {
+  const { subjects, tasks, studySessions, exams } = useStudyData();
+
+  const snapshot = useMemo(
+    () =>
+      buildStudySnapshot({
+        subjects,
+        tasks,
+        studySessions,
+        exams
+      }),
+    [subjects, tasks, studySessions, exams]
+  );
+
   return (
     <Surface className="dashboard-panel">
       <SectionHeader
@@ -48,7 +60,10 @@ function DashboardPlan() {
             </p>
           </>
         ) : (
-          <p className="plan-card__text">No exams are scheduled right now.</p>
+          <EmptyState
+            title="No exams are scheduled right now"
+            description="This area will later surface exam timelines and readiness guidance."
+          />
         )}
       </article>
     </Surface>

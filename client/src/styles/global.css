@@ -680,3 +680,155 @@ html {
   color: var(--text-muted);
   font-size: 0.85rem;
 }
+
+
+.dashboard-stack {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.task-manager {
+  display: grid;
+  gap: 1rem;
+}
+
+.task-manager__header-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.deadline-summary {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.deadline-summary__bar {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.task-manager__summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.task-composer,
+.task-filters {
+  display: grid;
+  gap: 1rem;
+}
+
+.task-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.task-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.task-form__actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.task-filters__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.task-filters__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.task-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.task-item {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.task-item.is-complete {
+  opacity: 0.9;
+}
+
+.task-item__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.9rem;
+  align-items: flex-start;
+}
+
+.task-item__content {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.task-item__title {
+  margin: 0;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.task-item.is-complete .task-item__title {
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+}
+
+.task-item__meta,
+.task-item__notes {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.task-item__badges {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.task-item__actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.plan-card__meta {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 900px) {
+  .task-manager__summary,
+  .task-form-grid,
+  .task-filters__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .task-item__top {
+    flex-direction: column;
+  }
+
+  .task-item__badges {
+    justify-content: flex-start;
+  }
+
+  .task-filters__actions {
+    justify-content: flex-start;
+  }
+}

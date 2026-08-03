@@ -73,7 +73,7 @@ function getSubjectProgress(subjectId, tasks) {
   };
 }
 
-function sortTasksForFocus(tasks, now = new Date()) {
+function sortTasksForFocus(tasks) {
   return [...tasks].sort((left, right) => {
     const leftDone = left.status === "done";
     const rightDone = right.status === "done";
