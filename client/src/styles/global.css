@@ -607,3 +607,70 @@ button {
     justify-content: flex-start;
   }
 }
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+.topbar__link,
+.ui-button,
+.surface,
+.agenda-item,
+.plan-card,
+.stat-card,
+.feature-card,
+.dashboard-panel {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.topbar__link:hover {
+  background: rgba(139, 107, 74, 0.08);
+  color: var(--accent-strong);
+}
+
+.ui-button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-strong);
+}
+
+.surface:hover,
+.stat-card:hover,
+.feature-card:hover,
+.dashboard-panel:hover,
+.agenda-item:hover,
+.plan-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-strong);
+}
+
+.page,
+.hero,
+.auth-card,
+.dashboard-panel,
+.feature-card,
+.stat-card,
+.agenda-item,
+.plan-card {
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

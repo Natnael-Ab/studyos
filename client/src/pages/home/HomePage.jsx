@@ -1,4 +1,5 @@
 import { Badge, Button, SectionHeader, StatCard, Surface } from "../../components/ui";
+import { PageTransition, Reveal } from "../../components/motion";
 
 const highlights = [
   {
@@ -17,49 +18,61 @@ const highlights = [
 
 function HomePage() {
   return (
-    <section className="page home-page">
-      <div className="hero">
-        <Badge tone="accent">StudyOS</Badge>
-        <h1 className="page__title">
-          A premium student operating system for clarity, focus, and momentum.
-        </h1>
-        <p className="page__text">
-          StudyOS is designed as a calm, professional workspace for students who
-          need a clear way to manage tasks, study time, and deadlines across every
-          device.
-        </p>
+    <PageTransition>
+      <section className="page home-page">
+        <Reveal className="hero">
+          <Badge tone="accent">StudyOS</Badge>
+          <h1 className="page__title">
+            A premium student operating system for clarity, focus, and momentum.
+          </h1>
+          <p className="page__text">
+            StudyOS is designed as a calm, professional workspace for students who
+            need a clear way to manage tasks, study time, and deadlines across every
+            device.
+          </p>
 
-        <div className="hero__actions">
-          <Button to="/dashboard" variant="primary">
-            Open workspace
-          </Button>
-          <Button to="/login" variant="ghost">
-            Sign in
-          </Button>
+          <div className="hero__actions">
+            <Button to="/dashboard" variant="primary">
+              Open workspace
+            </Button>
+            <Button to="/login" variant="ghost">
+              Sign in
+            </Button>
+          </div>
+        </Reveal>
+
+        <Reveal>
+          <SectionHeader
+            eyebrow="Overview"
+            title="Built for structured academic momentum"
+            description="The interface stays calm while the product remains useful in daily student life."
+          />
+        </Reveal>
+
+        <div className="metric-grid">
+          <Reveal delay={0.05}>
+            <StatCard label="Focus blocks" value="12" detail="Scheduled this week" />
+          </Reveal>
+          <Reveal delay={0.1}>
+            <StatCard label="Active subjects" value="5" detail="Across current term" />
+          </Reveal>
+          <Reveal delay={0.15}>
+            <StatCard label="Upcoming deadlines" value="8" detail="Visible at a glance" />
+          </Reveal>
         </div>
-      </div>
 
-      <SectionHeader
-        eyebrow="Overview"
-        title="Built for structured academic momentum"
-        description="The interface stays calm while the product remains useful in daily student life."
-      />
-
-      <div className="metric-grid">
-        <StatCard label="Focus blocks" value="12" detail="Scheduled this week" />
-        <StatCard label="Active subjects" value="5" detail="Across current term" />
-        <StatCard label="Upcoming deadlines" value="8" detail="Visible at a glance" />
-      </div>
-
-      <div className="feature-grid">
-        {highlights.map((item) => (
-          <Surface key={item.title} className="feature-card">
-            <h2 className="feature-card__title">{item.title}</h2>
-            <p className="feature-card__text">{item.text}</p>
-          </Surface>
-        ))}
-      </div>
-    </section>
+        <div className="feature-grid">
+          {highlights.map((item, index) => (
+            <Reveal key={item.title} delay={index * 0.06}>
+              <Surface className="feature-card">
+                <h2 className="feature-card__title">{item.title}</h2>
+                <p className="feature-card__text">{item.text}</p>
+              </Surface>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+    </PageTransition>
   );
 }
 
