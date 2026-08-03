@@ -1,32 +1,18 @@
 import { StatCard } from "../../../components/ui";
+import { buildStudySnapshot } from "../../../domain/studyPlanner";
+import { studySeed } from "../../../data/studySeed";
 
-const stats = [
-  {
-    label: "Study streak",
-    value: "7 days",
-    detail: "Consistent momentum"
-  },
-  {
-    label: "Pending tasks",
-    value: "12",
-    detail: "Needs review"
-  },
-  {
-    label: "Due this week",
-    value: "4",
-    detail: "Priority window"
-  }
-];
+const snapshot = buildStudySnapshot(studySeed);
 
 function DashboardOverview() {
   return (
     <div className="dashboard-overview">
-      {stats.map((stat) => (
+      {snapshot.summaryCards.map((card) => (
         <StatCard
-          key={stat.label}
-          label={stat.label}
-          value={stat.value}
-          detail={stat.detail}
+          key={card.label}
+          label={card.label}
+          value={card.value}
+          detail={card.detail}
         />
       ))}
     </div>

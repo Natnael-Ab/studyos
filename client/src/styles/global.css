@@ -674,3 +674,9 @@ html {
     scroll-behavior: auto !important;
   }
 }
+
+.plan-card__meta {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
