@@ -1,7 +1,7 @@
-function Badge({ children, tone = "neutral", className = "" }) {
-  const classes = ["badge", `badge--${tone}`, className].filter(Boolean).join(" ");
+import cn from "../../lib/cn";
 
-  return <span className={classes}>{children}</span>;
+function Badge({ children, tone = "neutral", className = "" }) {
+  return <span className={cn("badge", `badge--${tone}`, className)}>{children}</span>;
 }
 
 export default Badge;

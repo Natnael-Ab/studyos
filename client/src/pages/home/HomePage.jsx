@@ -1,6 +1,4 @@
-import Badge from "../../components/ui/Badge";
-import Button from "../../components/ui/Button";
-import Surface from "../../components/ui/Surface";
+import { Badge, Button, SectionHeader, StatCard, Surface } from "../../components/ui";
 
 const highlights = [
   {
@@ -15,12 +13,6 @@ const highlights = [
     title: "Progress tracking",
     text: "Keep momentum visible across subjects and goals."
   }
-];
-
-const stats = [
-  { label: "Focus blocks", value: "12" },
-  { label: "Active subjects", value: "5" },
-  { label: "Upcoming deadlines", value: "8" }
 ];
 
 function HomePage() {
@@ -47,13 +39,16 @@ function HomePage() {
         </div>
       </div>
 
+      <SectionHeader
+        eyebrow="Overview"
+        title="Built for structured academic momentum"
+        description="The interface stays calm while the product remains useful in daily student life."
+      />
+
       <div className="metric-grid">
-        {stats.map((stat) => (
-          <Surface key={stat.label} className="metric-card">
-            <span className="metric-card__label">{stat.label}</span>
-            <strong className="metric-card__value">{stat.value}</strong>
-          </Surface>
-        ))}
+        <StatCard label="Focus blocks" value="12" detail="Scheduled this week" />
+        <StatCard label="Active subjects" value="5" detail="Across current term" />
+        <StatCard label="Upcoming deadlines" value="8" detail="Visible at a glance" />
       </div>
 
       <div className="feature-grid">

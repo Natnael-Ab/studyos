@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import cn from "../../lib/cn";
 
 function Button({
   as: Component = "button",
@@ -11,14 +12,12 @@ function Button({
   type = "button",
   ...props
 }) {
-  const classes = [
+  const classes = cn(
     "ui-button",
     `ui-button--${variant}`,
     `ui-button--${size}`,
     className
-  ]
-    .filter(Boolean)
-    .join(" ");
+  );
 
   if (to) {
     return (

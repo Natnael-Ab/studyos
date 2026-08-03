@@ -1,12 +1,12 @@
-import Badge from "../../components/ui/Badge";
-import Button from "../../components/ui/Button";
-import Surface from "../../components/ui/Surface";
-
-const stats = [
-  { label: "Study streak", value: "7 days" },
-  { label: "Pending tasks", value: "12" },
-  { label: "Due this week", value: "4" }
-];
+import {
+  Badge,
+  Button,
+  EmptyState,
+  Progress,
+  SectionHeader,
+  StatCard,
+  Surface
+} from "../../components/ui";
 
 const priorities = [
   "Finish biology revision",
@@ -27,17 +27,18 @@ function DashboardPage() {
       </div>
 
       <div className="metric-grid">
-        {stats.map((stat) => (
-          <Surface key={stat.label} className="metric-card">
-            <span className="metric-card__label">{stat.label}</span>
-            <strong className="metric-card__value">{stat.value}</strong>
-          </Surface>
-        ))}
+        <StatCard label="Study streak" value="7 days" detail="Consistent momentum" />
+        <StatCard label="Pending tasks" value="12" detail="Needs review" />
+        <StatCard label="Due this week" value="4" detail="Priority window" />
       </div>
 
       <div className="dashboard-grid">
         <Surface className="dashboard-panel">
-          <h2 className="panel-title">Today’s priorities</h2>
+          <SectionHeader
+            eyebrow="Today"
+            title="Today’s priorities"
+            description="Keep the most important work visible and easy to act on."
+          />
           <ul className="priority-list">
             {priorities.map((item) => (
               <li key={item} className="priority-list__item">
@@ -45,16 +46,20 @@ function DashboardPage() {
               </li>
             ))}
           </ul>
+          <Progress value={68} label="Weekly momentum" />
         </Surface>
 
         <Surface className="dashboard-panel">
-          <h2 className="panel-title">Next actions</h2>
-          <p className="page__text">
-            Add tasks, schedule study sessions, and review progress in one place.
-          </p>
-          <Button to="/login" variant="ghost">
-            Connect account
-          </Button>
+          <SectionHeader
+            eyebrow="Next"
+            title="What to do after this"
+            description="The next version will connect real data, planning, and reminders."
+          />
+          <EmptyState
+            title="No live data yet"
+            description="This space is ready for tasks, study sessions, and schedule insights."
+            action={<Button to="/login" variant="ghost">Connect account</Button>}
+          />
         </Surface>
       </div>
     </section>

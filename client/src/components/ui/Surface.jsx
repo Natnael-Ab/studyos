@@ -1,8 +1,8 @@
-function Surface({ as: Component = "section", className = "", children, ...props }) {
-  const classes = ["surface", className].filter(Boolean).join(" ");
+import cn from "../../lib/cn";
 
+function Surface({ as: Component = "section", className = "", children, ...props }) {
   return (
-    <Component className={classes} {...props}>
+    <Component className={cn("surface", className)} {...props}>
       {children}
     </Component>
   );

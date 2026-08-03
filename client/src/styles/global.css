@@ -351,3 +351,133 @@ button {
     justify-content: flex-start;
   }
 }
+.field__control--textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.progress {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.progress__label,
+.progress__meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.progress__track {
+  width: 100%;
+  height: 0.7rem;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(29, 27, 24, 0.08);
+}
+
+.progress__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.section-header__content {
+  display: grid;
+  gap: 0.4rem;
+  max-width: 700px;
+}
+
+.section-header__eyebrow {
+  margin: 0;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+}
+
+.section-header__title {
+  margin: 0;
+  font-size: 1.25rem;
+  letter-spacing: -0.03em;
+}
+
+.section-header__description {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.stat-card {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.stat-card__label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.stat-card__value {
+  font-size: 1.7rem;
+  letter-spacing: -0.04em;
+}
+
+.stat-card__detail {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.empty-state {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.empty-state__title {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.empty-state__description {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.spinner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--text-muted);
+}
+
+.spinner__ring {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 999px;
+  border: 2px solid rgba(29, 27, 24, 0.14);
+  border-top-color: var(--accent-strong);
+  animation: spin 0.85s linear infinite;
+}
+
+.spinner__label {
+  font-size: 0.9rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 900px) {
+  .section-header {
+    align-items: flex-start;
+  }
+}

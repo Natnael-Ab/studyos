@@ -1,13 +1,13 @@
 import cn from "../../lib/cn";
 
-function Input({ label, hint, className = "", ...props }) {
+function Textarea({ label, hint, className = "", ...props }) {
   return (
     <label className={cn("field", className)}>
       <span className="field__label">{label}</span>
-      <input className="field__control" {...props} />
+      <textarea className="field__control field__control--textarea" {...props} />
       {hint ? <span className="field__hint">{hint}</span> : null}
     </label>
   );
 }
 
-export default Input;
+export default Textarea;
