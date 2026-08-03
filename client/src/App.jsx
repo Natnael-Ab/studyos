@@ -9,6 +9,7 @@ import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
 import SignupPage from "./pages/auth/SignupPage";
 import VerifyEmailPage from "./pages/auth/VerifyEmailPage";
 import OnboardingWizardPage from "./pages/onboarding/OnboardingWizardPage";
+import SettingsPage from "./pages/settings/SettingsPage";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
 
           <Route element={<AccessRoute scope="protected" />}>
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
           </Route>
         </Route>
 

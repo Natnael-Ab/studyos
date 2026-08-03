@@ -7,6 +7,8 @@ function DashboardHero() {
   const firstName =
     profile.fullName.trim().split(/\s+/).filter(Boolean)[0] || "there";
   const goalLabel = profile.goalType.replaceAll("-", " ");
+  const subjectCount = profile.subjects.length;
+  const termLabel = profile.termName || "the current term";
 
   return (
     <Surface className="dashboard-hero">
@@ -14,8 +16,8 @@ function DashboardHero() {
         <Badge tone="accent">Live workspace</Badge>
         <h1 className="page__title">Welcome back, {firstName}.</h1>
         <p className="page__text">
-          Your {goalLabel} workspace is ready. Tasks, sessions, and insights stay
-          in one calm view.
+          Your {goalLabel} workspace is ready. {subjectCount} subject
+          {subjectCount === 1 ? "" : "s"} are configured for {termLabel}.
         </p>
       </div>
 
@@ -23,8 +25,8 @@ function DashboardHero() {
         <Button type="button" variant="primary">
           Start focus session
         </Button>
-        <Button type="button" variant="ghost">
-          Review this week
+        <Button to="/settings" variant="ghost">
+          Workspace settings
         </Button>
       </div>
     </Surface>

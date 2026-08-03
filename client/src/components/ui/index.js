@@ -8,4 +8,5 @@ export { default as Select } from "./Select";
 export { default as Spinner } from "./Spinner";
 export { default as StatCard } from "./StatCard";
 export { default as Surface } from "./Surface";
+export { default as Switch } from "./Switch";
 export { default as Textarea } from "./Textarea";

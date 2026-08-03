@@ -1,13 +1,26 @@
-import { NavLink, Link } from "react-router-dom";
-import Button from "../ui/Button";
-
-const links = [
-  { to: "/", label: "Home" },
-  { to: "/login", label: "Login" },
-  { to: "/dashboard", label: "Workspace" }
-];
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Badge, Button } from "../ui";
+import { useWorkspaceAccess } from "../../hooks/useWorkspaceAccess";
 
 function TopBar() {
+  const navigate = useNavigate();
+  const { isAuthenticated, profile, signOut } = useWorkspaceAccess();
+
+  const firstName =
+    profile.fullName.trim().split(/\s+/).filter(Boolean)[0] || "Guest";
+
+  const links = isAuthenticated
+    ? [
+        { to: "/", label: "Home" },
+        { to: "/dashboard", label: "Workspace" },
+        { to: "/settings", label: "Settings" }
+      ]
+    : [{ to: "/", label: "Home" }];
+
+  function handleSignOut() {
+    navigate(signOut());
+  }
+
   return (
     <header className="topbar">
       <div className="topbar__brand-group">
@@ -33,9 +46,23 @@ function TopBar() {
       </nav>
 
       <div className="topbar__actions">
-        <Button to="/dashboard" variant="primary" size="sm">
-          Open workspace
-        </Button>
+        {isAuthenticated ? (
+          <>
+            <Badge tone="neutral">Hi, {firstName}</Badge>
+            <Button type="button" variant="ghost" size="sm" onClick={handleSignOut}>
+              Sign out
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button to="/login" variant="ghost" size="sm">
+              Sign in
+            </Button>
+            <Button to="/signup" variant="primary" size="sm">
+              Get started
+            </Button>
+          </>
+        )}
       </div>
     </header>
   );

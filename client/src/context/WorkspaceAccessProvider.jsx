@@ -131,6 +131,46 @@ function WorkspaceAccessProvider({ children }) {
     [access]
   );
 
+  const updateProfile = useCallback((profilePatch = {}) => {
+    setAccess((current) => {
+      const nextSubjects = Array.isArray(profilePatch.subjects)
+        ? [...new Set(profilePatch.subjects.map((item) => `${item}`.trim()).filter(Boolean))]
+        : current.profile.subjects;
+
+      return {
+        ...current,
+        profile: {
+          ...current.profile,
+          fullName:
+            typeof profilePatch.fullName === "string"
+              ? profilePatch.fullName.trim()
+              : current.profile.fullName,
+          goalType:
+            typeof profilePatch.goalType === "string"
+              ? profilePatch.goalType
+              : current.profile.goalType,
+          termName:
+            typeof profilePatch.termName === "string"
+              ? profilePatch.termName.trim()
+              : current.profile.termName,
+          weeklyStudyHours:
+            profilePatch.weeklyStudyHours !== undefined
+              ? Number(profilePatch.weeklyStudyHours)
+              : current.profile.weeklyStudyHours,
+          sessionLength:
+            profilePatch.sessionLength !== undefined
+              ? Number(profilePatch.sessionLength)
+              : current.profile.sessionLength,
+          studyMode:
+            typeof profilePatch.studyMode === "string"
+              ? profilePatch.studyMode
+              : current.profile.studyMode,
+          subjects: nextSubjects
+        }
+      };
+    });
+  }, []);
+
   const value = useMemo(
     () => ({
       isAuthenticated: access.isAuthenticated,
@@ -147,7 +187,8 @@ function WorkspaceAccessProvider({ children }) {
       requestPasswordReset,
       requestVerificationEmail,
       markEmailVerified,
-      completeOnboarding
+      completeOnboarding,
+      updateProfile
     }),
     [
       access,
@@ -157,7 +198,8 @@ function WorkspaceAccessProvider({ children }) {
       requestVerificationEmail,
       signIn,
       signOut,
-      signUp
+      signUp,
+      updateProfile
     ]
   );
 
