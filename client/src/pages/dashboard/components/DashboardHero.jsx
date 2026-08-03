@@ -22,8 +22,8 @@ function DashboardHero() {
       </div>
 
       <div className="dashboard-hero__actions">
-        <Button type="button" variant="primary">
-          Start focus session
+        <Button to="/planner" variant="primary">
+          Open planner
         </Button>
         <Button to="/settings" variant="ghost">
           Workspace settings

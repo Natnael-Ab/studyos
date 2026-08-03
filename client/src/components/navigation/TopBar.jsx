@@ -11,8 +11,8 @@ function TopBar() {
 
   const links = isAuthenticated
     ? [
-        { to: "/", label: "Home" },
         { to: "/dashboard", label: "Workspace" },
+        { to: "/planner", label: "Planner" },
         { to: "/settings", label: "Settings" }
       ]
     : [{ to: "/", label: "Home" }];
