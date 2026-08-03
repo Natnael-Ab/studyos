@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { StudyDataContext } from "../context/StudyDataContext";
+import StudyDataContext from "../context/StudyDataContext";
 
 function useStudyData() {
   const context = useContext(StudyDataContext);

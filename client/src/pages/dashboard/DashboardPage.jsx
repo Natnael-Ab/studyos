@@ -1,6 +1,7 @@
 import DashboardHero from "./components/DashboardHero";
 import DashboardOverview from "./components/DashboardOverview";
 import DashboardPlan from "./components/DashboardPlan";
+import StudyPlannerPanel from "./components/StudyPlannerPanel";
 import TaskManagerPanel from "./components/TaskManagerPanel";
 
 function DashboardPage() {
@@ -11,6 +12,7 @@ function DashboardPage() {
 
       <div className="dashboard-stack">
         <TaskManagerPanel />
+        <StudyPlannerPanel />
         <DashboardPlan />
       </div>
     </section>

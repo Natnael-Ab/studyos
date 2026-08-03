@@ -832,3 +832,149 @@ html {
     justify-content: flex-start;
   }
 }
+
+
+.study-planner {
+  display: grid;
+  gap: 1rem;
+}
+
+.study-planner__header-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.study-planner__summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.study-planner__grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 0.9rem;
+  align-items: start;
+}
+
+.focus-timer,
+.session-composer,
+.session-filters {
+  display: grid;
+  gap: 1rem;
+}
+
+.focus-timer__header {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.focus-timer__hint,
+.focus-timer__meta {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.focus-timer__display {
+  font-size: clamp(2.6rem, 8vw, 4.2rem);
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+
+.focus-timer__actions,
+.session-form__actions,
+.session-filters__actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.session-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.session-form-grid,
+.session-filters__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.session-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.session-item {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.session-item.is-complete {
+  opacity: 0.9;
+}
+
+.session-item__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.9rem;
+  align-items: flex-start;
+}
+
+.session-item__content {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.session-item__title {
+  margin: 0;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.session-item.is-complete .session-item__title {
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+}
+
+.session-item__meta,
+.session-item__notes {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.session-item__badges {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.session-item__actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+  .study-planner__summary,
+  .study-planner__grid,
+  .session-form-grid,
+  .session-filters__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .session-item__top {
+    flex-direction: column;
+  }
+
+  .session-item__badges {
+    justify-content: flex-start;
+  }
+}
