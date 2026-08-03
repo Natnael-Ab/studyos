@@ -3,12 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { Badge, Button, Input, SectionHeader, Surface } from "../../components/ui";
 import { useWorkspaceAccess } from "../../hooks/useWorkspaceAccess";
 
-function LoginPage() {
+function SignupPage() {
   const navigate = useNavigate();
-  const { signIn } = useWorkspaceAccess();
+  const { signUp } = useWorkspaceAccess();
   const [form, setForm] = useState({
+    fullName: "",
     email: "",
-    password: ""
+    password: "",
+    confirmPassword: ""
   });
   const [error, setError] = useState("");
 
@@ -24,25 +26,49 @@ function LoginPage() {
   function handleSubmit(event) {
     event.preventDefault();
 
-    if (!form.email.trim() || !form.password.trim()) {
-      setError("Enter your email and password.");
+    if (!form.fullName.trim() || !form.email.trim() || !form.password.trim()) {
+      setError("Complete all required fields.");
+      return;
+    }
+
+    if (form.password.length < 8) {
+      setError("Use at least 8 characters for the password.");
+      return;
+    }
+
+    if (form.password !== form.confirmPassword) {
+      setError("Passwords do not match.");
       return;
     }
 
     setError("");
-    const nextRoute = signIn({ email: form.email, password: form.password });
+    const nextRoute = signUp({
+      fullName: form.fullName,
+      email: form.email,
+      password: form.password
+    });
     navigate(nextRoute);
   }
 
   return (
     <Surface className="auth-card">
-      <Badge tone="accent">Secure access</Badge>
+      <Badge tone="accent">Create workspace</Badge>
       <SectionHeader
-        title="Welcome back."
-        description="Sign in to return to your workspace and continue your study flow."
+        title="Set up your StudyOS account."
+        description="Create your access, verify your email, then finish the setup wizard."
       />
 
       <form className="auth-form" onSubmit={handleSubmit}>
+        <Input
+          label="Full name"
+          name="fullName"
+          value={form.fullName}
+          onChange={handleChange}
+          placeholder="Your name"
+          autoComplete="name"
+          required
+        />
+
         <Input
           label="Email"
           name="email"
@@ -60,8 +86,19 @@ function LoginPage() {
           type="password"
           value={form.password}
           onChange={handleChange}
-          placeholder="Enter your password"
-          autoComplete="current-password"
+          placeholder="Create a strong password"
+          autoComplete="new-password"
+          required
+        />
+
+        <Input
+          label="Confirm password"
+          name="confirmPassword"
+          type="password"
+          value={form.confirmPassword}
+          onChange={handleChange}
+          placeholder="Repeat your password"
+          autoComplete="new-password"
           required
         />
 
@@ -69,12 +106,11 @@ function LoginPage() {
 
         <div className="auth-form__footer">
           <Button type="submit" variant="primary">
-            Sign in
+            Create account
           </Button>
 
           <div className="auth-form__links">
-            <Link to="/signup">Create account</Link>
-            <Link to="/reset-password">Forgot password</Link>
+            <Link to="/login">Already have an account</Link>
           </div>
         </div>
       </form>
@@ -82,4 +118,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default SignupPage;
