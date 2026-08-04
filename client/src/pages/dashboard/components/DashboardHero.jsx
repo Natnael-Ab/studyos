@@ -25,8 +25,8 @@ function DashboardHero() {
         <Button to="/planner" variant="primary">
           Open planner
         </Button>
-        <Button to="/search" variant="ghost">
-          Search workspace
+        <Button to="/library" variant="ghost">
+          Open library
         </Button>
       </div>
     </Surface>

@@ -12,6 +12,7 @@ import OnboardingWizardPage from "./pages/onboarding/OnboardingWizardPage";
 import SettingsPage from "./pages/settings/SettingsPage";
 import PlannerPage from "./pages/planner/PlannerPage";
 import SearchPage from "./pages/search/SearchPage";
+import LibraryPage from "./pages/library/LibraryPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/planner" element={<PlannerPage />} />
             <Route path="/search" element={<SearchPage />} />
+            <Route path="/library" element={<LibraryPage />} />
             <Route path="/settings" element={<SettingsPage />} />
           </Route>
         </Route>
