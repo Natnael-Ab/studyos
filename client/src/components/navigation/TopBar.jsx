@@ -13,6 +13,7 @@ function TopBar() {
     ? [
         { to: "/dashboard", label: "Workspace" },
         { to: "/planner", label: "Planner" },
+        { to: "/search", label: "Search" },
         { to: "/settings", label: "Settings" }
       ]
     : [{ to: "/", label: "Home" }];
