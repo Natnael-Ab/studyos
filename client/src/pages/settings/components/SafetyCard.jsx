@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Badge, Button, SectionHeader, Surface } from "../../../components/ui";
+import { useUiFeedback } from "../../../hooks/useUiFeedback";
 import { useWorkspaceAccess } from "../../../hooks/useWorkspaceAccess";
 import { useWorkspaceSettings } from "../../../hooks/useWorkspaceSettings";
 
@@ -7,13 +8,48 @@ function SafetyCard() {
   const navigate = useNavigate();
   const { signOut } = useWorkspaceAccess();
   const { resetSettings } = useWorkspaceSettings();
+  const { confirm, pushToast } = useUiFeedback();
 
-  function handleSignOut() {
+  async function handleSignOut() {
+    const confirmed = await confirm({
+      title: "Sign out of StudyOS?",
+      description: "You will leave the workspace session and return to the entry flow.",
+      confirmLabel: "Sign out",
+      cancelLabel: "Stay here",
+      tone: "accent"
+    });
+
+    if (!confirmed) {
+      return;
+    }
+
     navigate(signOut());
+    pushToast({
+      title: "Signed out",
+      message: "Your workspace session ended cleanly.",
+      tone: "neutral"
+    });
   }
 
-  function handleResetPreferences() {
+  async function handleResetPreferences() {
+    const confirmed = await confirm({
+      title: "Reset workspace preferences?",
+      description: "This will restore theme, density, and layout preferences to the defaults.",
+      confirmLabel: "Reset",
+      cancelLabel: "Keep settings",
+      tone: "neutral"
+    });
+
+    if (!confirmed) {
+      return;
+    }
+
     resetSettings();
+    pushToast({
+      title: "Preferences reset",
+      message: "Workspace appearance and layout preferences were restored.",
+      tone: "accent"
+    });
   }
 
   return (

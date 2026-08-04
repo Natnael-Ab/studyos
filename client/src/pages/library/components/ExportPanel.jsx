@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Badge, Button, SectionHeader, Surface } from "../../../components/ui";
 import { buildLibraryCsv, buildLibraryExportPayload } from "../../../domain/library";
 import { useStudyData } from "../../../hooks/useStudyData";
+import { useUiFeedback } from "../../../hooks/useUiFeedback";
 import { useWorkspaceAccess } from "../../../hooks/useWorkspaceAccess";
 import { useWorkspaceLibrary } from "../../../hooks/useWorkspaceLibrary";
 import { useWorkspaceSettings } from "../../../hooks/useWorkspaceSettings";
@@ -26,6 +27,7 @@ function ExportPanel() {
   const { settings } = useWorkspaceSettings();
   const { tasks, studySessions, exams, subjects } = useStudyData();
   const { notes, resources, attachments } = useWorkspaceLibrary();
+  const { pushToast } = useUiFeedback();
 
   const payload = useMemo(
     () =>
@@ -53,6 +55,12 @@ function ExportPanel() {
       JSON.stringify(payload, null, 2),
       "application/json;charset=utf-8"
     );
+
+    pushToast({
+      title: "JSON export downloaded",
+      message: "Your workspace snapshot is ready for backup or demo use.",
+      tone: "accent"
+    });
   }
 
   function handleCsvExport() {
@@ -62,6 +70,12 @@ function ExportPanel() {
       csv,
       "text/csv;charset=utf-8"
     );
+
+    pushToast({
+      title: "CSV export downloaded",
+      message: "A portable table version of the library was created.",
+      tone: "accent"
+    });
   }
 
   return (
