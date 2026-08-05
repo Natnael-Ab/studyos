@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AccessRoute from "./components/routing/AccessRoute";
 import AppShell from "./layouts/AppShell";
 import AuthShell from "./layouts/AuthShell";
@@ -13,6 +13,7 @@ import SettingsPage from "./pages/settings/SettingsPage";
 import PlannerPage from "./pages/planner/PlannerPage";
 import SearchPage from "./pages/search/SearchPage";
 import LibraryPage from "./pages/library/LibraryPage";
+import NotFoundPage from "./pages/not-found/NotFoundPage";
 
 function App() {
   return (
@@ -43,7 +44,7 @@ function App() {
           </Route>
         </Route>
 
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );

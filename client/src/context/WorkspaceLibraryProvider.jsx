@@ -2,8 +2,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import WorkspaceLibraryContext from "./WorkspaceLibraryContext";
 import { createId, loadWorkspaceLibrary, persistWorkspaceLibrary } from "./workspaceLibraryStorage";
 
-function normalizeText(value) {
-  return typeof value === "string" ? value.trim() : "";
+function normalizeText(value, fallback = "") {
+  return typeof value === "string" ? value.trim() : fallback;
 }
 
 function normalizeTags(value) {
@@ -61,18 +61,11 @@ function WorkspaceLibraryProvider({ children }) {
               ...note,
               title: normalizeText(updates.title ?? note.title),
               content: normalizeText(updates.content ?? note.content),
-              tags:
-                updates.tags !== undefined
-                  ? normalizeTags(updates.tags)
-                  : note.tags,
+              tags: updates.tags !== undefined ? normalizeTags(updates.tags) : note.tags,
               linkedType:
-                updates.linkedType !== undefined
-                  ? normalizeLinkedType(updates.linkedType)
-                  : note.linkedType,
+                updates.linkedType !== undefined ? normalizeLinkedType(updates.linkedType) : note.linkedType,
               linkedId:
-                updates.linkedType === "none"
-                  ? ""
-                  : normalizeText(updates.linkedId ?? note.linkedId),
+                updates.linkedType === "none" ? "" : normalizeText(updates.linkedId ?? note.linkedId),
               updatedAt: new Date().toISOString()
             }
           : note
@@ -128,9 +121,7 @@ function WorkspaceLibraryProvider({ children }) {
                   ? normalizeLinkedType(updates.linkedType)
                   : resource.linkedType,
               linkedId:
-                updates.linkedType === "none"
-                  ? ""
-                  : normalizeText(updates.linkedId ?? resource.linkedId),
+                updates.linkedType === "none" ? "" : normalizeText(updates.linkedId ?? resource.linkedId),
               updatedAt: new Date().toISOString()
             }
           : resource
@@ -232,11 +223,7 @@ function WorkspaceLibraryProvider({ children }) {
     ]
   );
 
-  return (
-    <WorkspaceLibraryContext.Provider value={value}>
-      {children}
-    </WorkspaceLibraryContext.Provider>
-  );
+  return <WorkspaceLibraryContext.Provider value={value}>{children}</WorkspaceLibraryContext.Provider>;
 }
 
 export default WorkspaceLibraryProvider;
