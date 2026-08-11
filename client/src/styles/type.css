@@ -1,15 +1,21 @@
 .page__title {
   margin: 0;
-  font-size: clamp(2rem, 5vw, 3.6rem);
-  line-height: 1.03;
-  letter-spacing: -0.05em;
+  max-width: 12ch;
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 7vw, 6.6rem);
+  font-weight: 720;
+  line-height: 0.91;
+  letter-spacing: -0.085em;
+  text-wrap: balance;
 }
 
 .page__text {
   margin: 0;
-  max-width: 58ch;
+  max-width: var(--reading-width);
   color: var(--text-muted);
-  font-size: 1rem;
+  font-size: clamp(1rem, 1.45vw, 1.12rem);
+  line-height: 1.72;
+  text-wrap: pretty;
 }
 
 .section-header {
@@ -22,32 +28,32 @@
 
 .section-header__content {
   display: grid;
-  gap: 0.4rem;
-  max-width: 700px;
+  gap: 0.45rem;
+  max-width: 720px;
 }
 
 .section-header__eyebrow {
   margin: 0;
-  font-size: 0.78rem;
+  font-size: 0.68rem;
+  font-weight: 750;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--text-muted);
+  letter-spacing: 0.2em;
+  color: var(--accent-strong);
 }
 
 .section-header__title {
   margin: 0;
-  font-size: 1.25rem;
-  letter-spacing: -0.03em;
+  font-size: clamp(1.35rem, 2.2vw, 1.8rem);
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
 }
 
 .section-header__description {
   margin: 0;
+  max-width: 60ch;
   color: var(--text-muted);
-}
-
-.section-header__action {
-  display: flex;
-  align-items: center;
+  line-height: 1.65;
 }
 
 .panel-title,
@@ -73,7 +79,8 @@
 .search-result-card__title,
 .search-view-card__title {
   font-size: 1.05rem;
-  letter-spacing: -0.02em;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
 }
 
 .feature-card__text,
@@ -102,5 +109,5 @@
 .summary-card__label,
 .progress__label,
 .progress__meta {
-  font-size: 0.8rem;
+  font-size: 0.76rem;
 }
