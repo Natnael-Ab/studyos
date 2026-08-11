@@ -1,17 +1,21 @@
+import { forwardRef } from "react";
 import { Link } from "react-router-dom";
 import cn from "../../lib/cn";
 
-function Button({
-  as: Component = "button",
-  to,
-  href,
-  variant = "primary",
-  size = "md",
-  className = "",
-  children,
-  type = "button",
-  ...props
-}) {
+const Button = forwardRef(function Button(
+  {
+    as: Component = "button",
+    to,
+    href,
+    variant = "primary",
+    size = "md",
+    className = "",
+    children,
+    type = "button",
+    ...props
+  },
+  ref
+) {
   const classes = cn(
     "ui-button",
     `ui-button--${variant}`,
@@ -21,7 +25,12 @@ function Button({
 
   if (to) {
     return (
-      <Link className={classes} to={to} {...props}>
+      <Link
+        ref={ref}
+        className={classes}
+        to={to}
+        {...props}
+      >
         {children}
       </Link>
     );
@@ -29,17 +38,27 @@ function Button({
 
   if (href) {
     return (
-      <a className={classes} href={href} {...props}>
+      <a
+        ref={ref}
+        className={classes}
+        href={href}
+        {...props}
+      >
         {children}
       </a>
     );
   }
 
   return (
-    <Component className={classes} type={type} {...props}>
+    <Component
+      ref={ref}
+      className={classes}
+      type={type}
+      {...props}
+    >
       {children}
     </Component>
   );
-}
+});
 
 export default Button;

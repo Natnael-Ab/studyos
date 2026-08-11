@@ -5,7 +5,8 @@ const guestNavigationGroups = [
       {
         to: "/",
         label: "Home",
-        description: "Start here"
+        description: "Discover StudyOS",
+        icon: "workspace"
       }
     ]
   }
@@ -13,27 +14,19 @@ const guestNavigationGroups = [
 
 const authenticatedNavigationGroups = [
   {
-    label: "Core",
+    label: "Workspace",
     items: [
       {
         to: "/dashboard",
         label: "Workspace",
-        description: "Overview and next steps"
-      }
-    ]
-  },
-  {
-    label: "Planning",
-    items: [
+        description: "Today, priorities, and next steps",
+        icon: "workspace"
+      },
       {
         to: "/planner",
         label: "Planner",
-        description: "Calendar-first scheduling"
-      },
-      {
-        to: "/search",
-        label: "Search",
-        description: "Find tasks, sessions, and exams"
+        description: "Plan your days, weeks, and exams",
+        icon: "planner"
       }
     ]
   },
@@ -41,9 +34,16 @@ const authenticatedNavigationGroups = [
     label: "Knowledge",
     items: [
       {
+        to: "/search",
+        label: "Search",
+        description: "Find anything across your workspace",
+        icon: "search"
+      },
+      {
         to: "/library",
         label: "Library",
-        description: "Notes, resources, and attachments"
+        description: "Notes, resources, and attachments",
+        icon: "library"
       }
     ]
   },
@@ -53,7 +53,8 @@ const authenticatedNavigationGroups = [
       {
         to: "/settings",
         label: "Settings",
-        description: "Profile and workspace preferences"
+        description: "Appearance and workspace preferences",
+        icon: "settings"
       }
     ]
   }
@@ -63,32 +64,32 @@ const routeMeta = [
   {
     path: "/",
     title: "Home",
-    description: "Start here"
+    description: "Discover StudyOS"
   },
   {
     path: "/dashboard",
     title: "Workspace",
-    description: "Today, progress, and next steps"
+    description: "Today, priorities, and next steps"
   },
   {
     path: "/planner",
     title: "Planner",
-    description: "Plan the week with calm precision"
+    description: "Plan your days, weeks, and exams"
   },
   {
     path: "/search",
     title: "Search",
-    description: "Find tasks, sessions, exams, and saved views"
+    description: "Find anything across your workspace"
   },
   {
     path: "/library",
     title: "Library",
-    description: "Notes, resources, and attachment records"
+    description: "Notes, resources, and attachments"
   },
   {
     path: "/settings",
     title: "Settings",
-    description: "Profile and workspace preferences"
+    description: "Appearance and workspace preferences"
   }
 ];
 
@@ -98,17 +99,24 @@ function normalizePathname(pathname) {
 }
 
 function getNavigationGroups(isAuthenticated) {
-  return isAuthenticated ? authenticatedNavigationGroups : guestNavigationGroups;
+  return isAuthenticated
+    ? authenticatedNavigationGroups
+    : guestNavigationGroups;
 }
 
 function getNavigationLinks(isAuthenticated) {
-  return getNavigationGroups(isAuthenticated).flatMap((group) => group.items);
+  return getNavigationGroups(isAuthenticated).flatMap(
+    (group) => group.items
+  );
 }
 
 function getShellRouteMeta(pathname, isAuthenticated) {
   const normalizedPath = normalizePathname(pathname);
 
-  const match = routeMeta.find((item) => item.path === normalizedPath);
+  const match = routeMeta.find(
+    (item) => item.path === normalizedPath
+  );
+
   if (match) {
     return match;
   }
@@ -118,8 +126,8 @@ function getShellRouteMeta(pathname, isAuthenticated) {
   }
 
   return {
-    title: "StudyOS",
-    description: "Premium student operating system"
+    title: "Workspace",
+    description: "Your academic workspace"
   };
 }
 

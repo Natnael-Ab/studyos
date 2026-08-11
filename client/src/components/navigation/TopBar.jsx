@@ -1,8 +1,15 @@
-import { useMemo, useState } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { Badge, Button } from "../ui";
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  Link,
+  NavLink,
+  useLocation,
+  useNavigate
+} from "react-router-dom";
+import { Button } from "../ui";
 import { useWorkspaceAccess } from "../../hooks/useWorkspaceAccess";
+import AccountMenu from "./AccountMenu";
 import MobileNavDrawer from "./MobileNavDrawer";
+import NavigationIcon from "./NavigationIcon";
 import {
   getNavigationGroups,
   getNavigationLinks,
@@ -12,11 +19,18 @@ import {
 function TopBar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isAuthenticated, profile, signOut } = useWorkspaceAccess();
-  const [menuOpenKey, setMenuOpenKey] = useState(null);
 
-  const firstName =
-    profile.fullName.trim().split(/\s+/).filter(Boolean)[0] || "Guest";
+  const {
+    isAuthenticated,
+    profile,
+    signOut
+  } = useWorkspaceAccess();
+
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
+
+  const accountButtonRef = useRef(null);
+  const menuButtonRef = useRef(null);
 
   const navigationGroups = useMemo(
     () => getNavigationGroups(isAuthenticated),
@@ -29,56 +43,164 @@ function TopBar() {
   );
 
   const currentSection = useMemo(
-    () => getShellRouteMeta(location.pathname, isAuthenticated),
+    () =>
+      getShellRouteMeta(
+        location.pathname,
+        isAuthenticated
+      ),
     [isAuthenticated, location.pathname]
   );
 
-  const isMenuOpen = menuOpenKey === location.key;
+  const firstName =
+    profile.fullName
+      ?.trim()
+      .split(/\s+/)
+      .filter(Boolean)[0] || "Student";
 
-  function handleSignOut() {
-    setMenuOpenKey(null);
-    navigate(signOut());
+  const initial = firstName
+    .charAt(0)
+    .toUpperCase();
+
+  useEffect(() => {
+    function handleShortcut(event) {
+      if (!isAuthenticated) {
+        return;
+      }
+
+      if (!(event.metaKey || event.ctrlKey)) {
+        return;
+      }
+
+      if (event.key.toLowerCase() !== "k") {
+        return;
+      }
+
+      const target = event.target;
+
+      const isTypingField =
+        target instanceof HTMLElement &&
+        ["INPUT", "TEXTAREA", "SELECT"].includes(
+          target.tagName
+        );
+
+      if (isTypingField) {
+        return;
+      }
+
+      event.preventDefault();
+      navigate("/search");
+    }
+
+    window.addEventListener(
+      "keydown",
+      handleShortcut
+    );
+
+    return () => {
+      window.removeEventListener(
+        "keydown",
+        handleShortcut
+      );
+    };
+  }, [isAuthenticated, navigate]);
+
+  function handleAccountToggle() {
+    setMenuOpen(false);
+    setAccountOpen((current) => !current);
+  }
+
+  function handleAccountClose() {
+    setAccountOpen(false);
   }
 
   function handleOpenMenu() {
-    setMenuOpenKey(location.key);
+    setAccountOpen(false);
+    setMenuOpen(true);
   }
 
   function handleCloseMenu() {
-    setMenuOpenKey(null);
+    setMenuOpen(false);
+
+    window.requestAnimationFrame(() => {
+      menuButtonRef.current?.focus();
+    });
   }
+
+  function handleSignOut() {
+    setAccountOpen(false);
+    setMenuOpen(false);
+    navigate(signOut());
+  }
+
+  const brandRoute = isAuthenticated
+    ? "/dashboard"
+    : "/";
 
   return (
     <header className="topbar">
       <div className="topbar__brand-column">
-        <div className="topbar__brand-group">
-          <Link to="/" className="topbar__brand">
-            StudyOS
-          </Link>
-          <span className="topbar__subtitle">Premium student operating system</span>
-        </div>
+        <Link
+          to={brandRoute}
+          className="topbar__brand"
+          aria-label={
+            isAuthenticated
+              ? "Open StudyOS Workspace"
+              : "Open StudyOS Home"
+          }
+        >
+          <span
+            className="topbar__brand-mark"
+            aria-hidden="true"
+          />
 
-        <div className="topbar__context" aria-live="polite">
-          <span className="topbar__context-label">Current</span>
-          <strong className="topbar__context-title">{currentSection.title}</strong>
-          <span className="topbar__context-text">{currentSection.description}</span>
-        </div>
+          <span>StudyOS</span>
+        </Link>
+
+        {isAuthenticated ? (
+          <span className="topbar__section-label">
+            {currentSection.title}
+          </span>
+        ) : null}
       </div>
 
-      <nav className="topbar__nav" aria-label="Primary">
-        {navigationLinks.map((link) => (
-          <NavLink
-            key={link.to}
-            to={link.to}
-            className={({ isActive }) =>
-              `topbar__link ${isActive ? "is-active" : ""}`
-            }
-            end={link.to === "/"}
-          >
-            {link.label}
-          </NavLink>
-        ))}
-      </nav>
+      {isAuthenticated ? (
+        <nav
+          className="topbar__nav"
+          aria-label="Primary navigation"
+        >
+          {navigationLinks.map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              end={link.to === "/"}
+              className={({ isActive }) =>
+                `topbar__link ${
+                  isActive ? "is-active" : ""
+                }`
+              }
+            >
+              <NavigationIcon
+                name={link.icon}
+                size={15}
+              />
+
+              <span>{link.label}</span>
+
+              {link.to === "/search" ? (
+                <kbd
+                  className="topbar__search-shortcut"
+                  aria-label="Keyboard shortcut Control or Command K"
+                >
+                  <span className="topbar__shortcut-command">
+                    ⌘
+                  </span>
+                  K
+                </kbd>
+              ) : null}
+            </NavLink>
+          ))}
+        </nav>
+      ) : null}
 
       <div className="topbar__actions">
         {isAuthenticated ? (
@@ -87,27 +209,96 @@ function TopBar() {
               type="button"
               variant="ghost"
               size="sm"
+              className="topbar__mobile-search"
+              onClick={() => navigate("/search")}
+              aria-label="Open Search"
+            >
+              <NavigationIcon
+                name="search"
+                size={17}
+              />
+            </Button>
+
+            <button
+              ref={accountButtonRef}
+              type="button"
+              className={`account-trigger ${
+                accountOpen
+                  ? "is-open"
+                  : ""
+              }`}
+              onClick={handleAccountToggle}
+              aria-expanded={accountOpen}
+              aria-haspopup="menu"
+              aria-label={`Open account menu for ${firstName}`}
+            >
+              <span
+                className="account-trigger__avatar"
+                aria-hidden="true"
+              >
+                {initial}
+              </span>
+
+              <span className="account-trigger__name">
+                {firstName}
+              </span>
+
+              <span
+                className="account-trigger__chevron"
+                aria-hidden="true"
+              >
+                <NavigationIcon
+                  name="arrow"
+                  size={12}
+                />
+              </span>
+            </button>
+
+            <Button
+              ref={menuButtonRef}
+              type="button"
+              variant="ghost"
+              size="sm"
               className="topbar__menu-button"
               onClick={handleOpenMenu}
+              aria-expanded={menuOpen}
+              aria-controls="studyos-mobile-navigation"
+              aria-label="Open navigation"
             >
-              Menu
+              <NavigationIcon
+                name="menu"
+                size={18}
+              />
             </Button>
 
-            <Badge tone="neutral" className="topbar__status">
-              Hi, {firstName}
-            </Badge>
-
-            <Button type="button" variant="ghost" size="sm" onClick={handleSignOut}>
-              Sign out
-            </Button>
+            <AccountMenu
+              open={accountOpen}
+              onClose={handleAccountClose}
+              profile={profile}
+              onSignOut={handleSignOut}
+              anchorRef={accountButtonRef}
+            />
           </>
         ) : (
           <>
-            <Button to="/login" variant="ghost" size="sm">
+            <Button
+              to="/login"
+              variant="ghost"
+              size="sm"
+            >
               Sign in
             </Button>
-            <Button to="/signup" variant="primary" size="sm">
+
+            <Button
+              to="/signup"
+              variant="primary"
+              size="sm"
+            >
               Get started
+              <NavigationIcon
+                name="arrow"
+                size={15}
+              />
             </Button>
           </>
         )}
@@ -115,11 +306,13 @@ function TopBar() {
 
       {isAuthenticated ? (
         <MobileNavDrawer
-          open={isMenuOpen}
+          id="studyos-mobile-navigation"
+          open={menuOpen}
           onClose={handleCloseMenu}
           groups={navigationGroups}
           currentSection={currentSection}
           profileName={firstName}
+          profile={profile}
           onSignOut={handleSignOut}
         />
       ) : null}
