@@ -1,10 +1,11 @@
 import {
-  buildSessionMetrics
-} from "./studySessionPlanner";
-
-import {
   buildTaskMetrics
 } from "./taskManager";
+
+import {
+  buildSessionMetrics,
+  formatSessionDateLabel
+} from "./studySessionPlanner";
 
 import {
   daysUntil,
@@ -27,6 +28,23 @@ function getDayGreeting(
   return "Good evening";
 }
 
+function isSameCalendarDay(
+  first,
+  second
+) {
+  const firstDate = new Date(first);
+  const secondDate = new Date(second);
+
+  return (
+    firstDate.getFullYear() ===
+      secondDate.getFullYear() &&
+    firstDate.getMonth() ===
+      secondDate.getMonth() &&
+    firstDate.getDate() ===
+      secondDate.getDate()
+  );
+}
+
 function buildDashboardSnapshot(
   {
     subjects = [],
@@ -36,6 +54,13 @@ function buildDashboardSnapshot(
   },
   now = new Date()
 ) {
+  const subjectMap = new Map(
+    subjects.map((subject) => [
+      subject.id,
+      subject
+    ])
+  );
+
   const taskMetrics =
     buildTaskMetrics(
       tasks,
@@ -48,55 +73,48 @@ function buildDashboardSnapshot(
       now
     );
 
-  const subjectMap =
-    new Map(
-      subjects.map(
-        (subject) => [
-          subject.id,
-          subject
-        ]
-      )
-    );
-
   const openTasks =
     tasks.filter(
       (task) =>
         task.status !== "done"
     );
 
+  const completedTasks =
+    tasks.filter(
+      (task) =>
+        task.status === "done"
+    );
+
   const todayTasks =
     openTasks
-      .filter(
-        (task) =>
-          daysUntil(
-            task.dueDate,
-            now
-          ) === 0
+      .filter((task) =>
+        isSameCalendarDay(
+          task.dueDate,
+          now
+        )
       )
-      .sort(
-        (left, right) => {
-          const priorityDelta =
-            getPriorityWeight(
-              right.priority
-            ) -
-            getPriorityWeight(
-              left.priority
-            );
-
-          if (priorityDelta !== 0) {
-            return priorityDelta;
-          }
-
-          return (
-            Number(
-              left.effortMinutes ?? 0
-            ) -
-            Number(
-              right.effortMinutes ?? 0
-            )
+      .sort((left, right) => {
+        const priorityDelta =
+          getPriorityWeight(
+            right.priority
+          ) -
+          getPriorityWeight(
+            left.priority
           );
+
+        if (priorityDelta !== 0) {
+          return priorityDelta;
         }
-      );
+
+        return (
+          Number(
+            left.effortMinutes ?? 0
+          ) -
+          Number(
+            right.effortMinutes ?? 0
+          )
+        );
+      });
 
   const overdueTasks =
     openTasks
@@ -107,41 +125,75 @@ function buildDashboardSnapshot(
             now
           ) < 0
       )
-      .sort(
-        (left, right) => {
-          const overdueDelta =
-            daysUntil(
-              left.dueDate,
-              now
-            ) -
-            daysUntil(
-              right.dueDate,
-              now
-            );
-
-          if (overdueDelta !== 0) {
-            return overdueDelta;
-          }
-
-          return (
-            getPriorityWeight(
-              right.priority
-            ) -
-            getPriorityWeight(
-              left.priority
-            )
+      .sort((left, right) => {
+        const leftDays =
+          daysUntil(
+            left.dueDate,
+            now
           );
+
+        const rightDays =
+          daysUntil(
+            right.dueDate,
+            now
+          );
+
+        if (leftDays !== rightDays) {
+          return leftDays - rightDays;
         }
-      );
+
+        return (
+          getPriorityWeight(
+            right.priority
+          ) -
+          getPriorityWeight(
+            left.priority
+          )
+        );
+      });
 
   const nextTask =
     sortTasksForFocus(
       openTasks
     )[0] ?? null;
 
+  const enrichedNextTask =
+    nextTask
+      ? {
+          ...nextTask,
+          subjectName:
+            subjectMap.get(
+              nextTask.subjectId
+            )?.name ??
+            "Unknown subject",
+          dueLabel:
+            formatDueLabel(
+              nextTask.dueDate,
+              now
+            )
+        }
+      : null;
+
   const nextSession =
-    sessionMetrics.nextSession ??
-    null;
+    sessionMetrics.nextSession
+      ? {
+          ...sessionMetrics.nextSession,
+          subjectName:
+            subjectMap.get(
+              sessionMetrics
+                .nextSession
+                .subjectId
+            )?.name ??
+            "Unknown subject",
+          dateLabel:
+            formatSessionDateLabel(
+              sessionMetrics
+                .nextSession
+                .scheduledFor,
+              now
+            )
+        }
+      : null;
 
   const nextExam =
     [...exams]
@@ -162,27 +214,36 @@ function buildDashboardSnapshot(
           ) >= 0
       ) ?? null;
 
+  const enrichedNextExam =
+    nextExam
+      ? {
+          ...nextExam,
+          subjectName:
+            subjectMap.get(
+              nextExam.subjectId
+            )?.name ??
+            "Unknown subject",
+          dueLabel:
+            formatDueLabel(
+              nextExam.date,
+              now
+            )
+        }
+      : null;
+
   const todayStudyMinutes =
     studySessions
-      .filter(
-        (session) => {
-          const sessionDate =
-            new Date(
-              session.scheduledFor
-            );
-
-          return (
-            sessionDate.getFullYear() ===
-              now.getFullYear() &&
-            sessionDate.getMonth() ===
-              now.getMonth() &&
-            sessionDate.getDate() ===
-              now.getDate()
-          );
-        }
+      .filter((session) =>
+        isSameCalendarDay(
+          session.scheduledFor,
+          now
+        )
       )
       .reduce(
-        (total, session) =>
+        (
+          total,
+          session
+        ) =>
           total +
           Number(
             session.durationMinutes ??
@@ -191,46 +252,31 @@ function buildDashboardSnapshot(
         0
       );
 
-  const completedTasks =
-    tasks.filter(
-      (task) =>
-        task.status === "done"
-    ).length;
+  const completedTaskCount =
+    completedTasks.length;
 
   const taskProgress =
     tasks.length === 0
       ? 0
       : Math.round(
-          (completedTasks /
+          (completedTaskCount /
             tasks.length) *
             100
         );
 
-  const upcomingTasks =
-    openTasks
-      .filter(
-        (task) => {
-          const difference =
-            daysUntil(
-              task.dueDate,
-              now
-            );
+  const dueSoonTasks =
+    openTasks.filter((task) => {
+      const difference =
+        daysUntil(
+          task.dueDate,
+          now
+        );
 
-          return (
-            difference >= 0 &&
-            difference <= 7
-          );
-        }
-      )
-      .sort(
-        (left, right) =>
-          new Date(
-            left.dueDate
-          ).getTime() -
-          new Date(
-            right.dueDate
-          ).getTime()
+      return (
+        difference >= 0 &&
+        difference <= 3
       );
+    });
 
   return {
     greeting: getDayGreeting(
@@ -251,52 +297,16 @@ function buildDashboardSnapshot(
     overdueTasks:
       overdueTasks.slice(0, 3),
 
-    upcomingTasks:
-      upcomingTasks.slice(0, 4),
+    dueSoonTasks:
+      dueSoonTasks.slice(0, 4),
 
-    nextTask: nextTask
-      ? {
-          ...nextTask,
-          subjectName:
-            subjectMap.get(
-              nextTask.subjectId
-            )?.name ??
-            "Unknown subject",
-          dueLabel:
-            formatDueLabel(
-              nextTask.dueDate,
-              now
-            )
-        }
-      : null,
+    nextTask:
+      enrichedNextTask,
 
-    nextSession:
-      nextSession
-        ? {
-            ...nextSession,
-            subjectName:
-              subjectMap.get(
-                nextSession.subjectId
-              )?.name ??
-              "Unknown subject"
-          }
-        : null,
+    nextSession,
 
-    nextExam: nextExam
-      ? {
-          ...nextExam,
-          subjectName:
-            subjectMap.get(
-              nextExam.subjectId
-            )?.name ??
-            "Unknown subject",
-          dueLabel:
-            formatDueLabel(
-              nextExam.date,
-              now
-            )
-        }
-      : null
+    nextExam:
+      enrichedNextExam
   };
 }
 

@@ -8,8 +8,9 @@ import { useWorkspaceAccess } from "../../../hooks/useWorkspaceAccess";
 function DashboardHero({
   snapshot
 }) {
-  const { profile } =
-    useWorkspaceAccess();
+  const {
+    profile
+  } = useWorkspaceAccess();
 
   const firstName =
     profile.fullName
@@ -19,7 +20,9 @@ function DashboardHero({
     "there";
 
   const subjectCount =
-    profile.subjects.length;
+    Array.isArray(profile.subjects)
+      ? profile.subjects.length
+      : 0;
 
   return (
     <section
@@ -44,12 +47,13 @@ function DashboardHero({
           <p className="dashboard-hero__text">
             {subjectCount}
             {" "}
-            subject
+            configured subject
             {subjectCount === 1
               ? ""
-              : "s"}{" "}
-            in your current workspace, with the
-            immediate work prioritized below.
+              : "s"}.
+            {" "}
+            Your immediate work is prioritized below so
+            you can start with less friction.
           </p>
 
           <div className="dashboard-hero__actions">
@@ -83,7 +87,8 @@ function DashboardHero({
 
           <div
             className="dashboard-hero__status-ring"
-            aria-label={`${snapshot.taskProgress}% of tasks completed`}
+            role="img"
+            aria-label={`${snapshot.taskProgress}% of tasks are completed`}
           >
             <span
               style={{

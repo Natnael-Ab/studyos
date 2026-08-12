@@ -4,10 +4,6 @@ import {
   Surface
 } from "../../../components/ui";
 
-import {
-  formatSessionDateLabel
-} from "../../../domain/studySessionPlanner";
-
 function DashboardCommandCenter({
   snapshot
 }) {
@@ -36,20 +32,21 @@ function DashboardCommandCenter({
             </h2>
 
             <p>
-              StudyOS has organized the immediate workload
-              so you can act without sorting through everything.
+              StudyOS has already brought the immediate workload
+              forward. You can act without sorting through the
+              entire workspace first.
             </p>
           </div>
 
           <div className="dashboard-command__signal">
-            <span>Today</span>
+            <span>Due today</span>
 
             <strong>
               {todayTasks.length}
             </strong>
 
             <small>
-              due today
+              active items
             </small>
           </div>
         </div>
@@ -96,7 +93,10 @@ function DashboardCommandCenter({
             </>
           ) : (
             <div className="dashboard-command__empty">
-              <span aria-hidden="true">
+              <span
+                className="dashboard-command__empty-mark"
+                aria-hidden="true"
+              >
                 ✓
               </span>
 
@@ -106,8 +106,8 @@ function DashboardCommandCenter({
                 </h3>
 
                 <p>
-                  Add a task or create a study session
-                  when you are ready for the next block.
+                  Add a task or plan a study session when
+                  you are ready for the next block.
                 </p>
               </div>
             </div>
@@ -120,7 +120,13 @@ function DashboardCommandCenter({
           <div className="dashboard-mini-card__header">
             <span>Next session</span>
 
-            <Badge tone="accent">
+            <Badge
+              tone={
+                nextSession
+                  ? "accent"
+                  : "neutral"
+              }
+            >
               {nextSession
                 ? "Planned"
                 : "Clear"}
@@ -138,9 +144,7 @@ function DashboardCommandCenter({
               </p>
 
               <span>
-                {formatSessionDateLabel(
-                  nextSession.scheduledFor
-                )}
+                {nextSession.dateLabel}
                 {" · "}
                 {nextSession.durationMinutes}
                 {" min"}
@@ -148,16 +152,14 @@ function DashboardCommandCenter({
             </>
           ) : (
             <p>
-              No study session is waiting in your queue.
+              No upcoming study session needs attention.
             </p>
           )}
         </Surface>
 
         <Surface className="dashboard-mini-card">
           <div className="dashboard-mini-card__header">
-            <span>
-              Upcoming exam
-            </span>
+            <span>Upcoming exam</span>
 
             <Badge
               tone={
@@ -196,9 +198,7 @@ function DashboardCommandCenter({
         {overdueTasks.length > 0 ? (
           <Surface className="dashboard-mini-card dashboard-mini-card--alert">
             <div className="dashboard-mini-card__header">
-              <span>
-                Needs attention
-              </span>
+              <span>Needs attention</span>
 
               <Badge tone="accent">
                 {overdueTasks.length}

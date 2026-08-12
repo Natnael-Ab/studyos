@@ -1,10 +1,12 @@
 import { useMemo } from "react";
 import { useStudyData } from "../../hooks/useStudyData";
-import { buildDashboardSnapshot } from "../../domain/dashboard";
+import {
+  buildDashboardSnapshot
+} from "../../domain/dashboard";
 
-import DashboardCommandCenter from "./components/DashboardCommandCenter";
 import DashboardHero from "./components/DashboardHero";
 import DashboardOverview from "./components/DashboardOverview";
+import DashboardCommandCenter from "./components/DashboardCommandCenter";
 import DashboardPlan from "./components/DashboardPlan";
 import InsightsPanel from "./components/InsightsPanel";
 import StudyPlannerPanel from "./components/StudyPlannerPanel";
@@ -35,7 +37,9 @@ function DashboardPage() {
   );
 
   return (
-    <section className="page dashboard-page dashboard-page--premium">
+    <section
+      className="page dashboard-page dashboard-page--premium"
+    >
       <DashboardHero
         snapshot={snapshot}
       />
@@ -59,14 +63,14 @@ function DashboardPage() {
             </span>
 
             <h2 id="dashboard-detail-title">
-              Manage the system when you are ready for detail.
+              Go deeper only when you need to.
             </h2>
           </div>
 
           <p>
-            The command center keeps immediate work small.
-            These deeper tools stay available below when you
-            need to plan, edit, or inspect the system.
+            Your immediate work stays above. The full planning,
+            task, insight, and study tools remain available below
+            when you want to manage the system in detail.
           </p>
         </div>
 
