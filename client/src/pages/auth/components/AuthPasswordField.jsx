@@ -10,6 +10,10 @@ function AuthPasswordField({
 }) {
   const [visible, setVisible] = useState(false);
 
+  const toggleLabel = visible
+    ? "Hide password"
+    : "Show password";
+
   return (
     <label
       className={cn(
@@ -18,12 +22,18 @@ function AuthPasswordField({
         className
       )}
     >
-      <span className="field__label">{label}</span>
+      <span className="field__label">
+        {label}
+      </span>
 
       <span className="auth-password-field__control">
         <input
           className="field__control"
-          type={visible ? "text" : "password"}
+          type={
+            visible
+              ? "text"
+              : "password"
+          }
           {...props}
         />
 
@@ -31,17 +41,19 @@ function AuthPasswordField({
           type="button"
           className="auth-password-field__toggle"
           onClick={() =>
-            setVisible((current) => !current)
+            setVisible(
+              (current) => !current
+            )
           }
-          aria-label={
-            visible
-              ? "Hide password"
-              : "Show password"
-          }
+          aria-label={toggleLabel}
           aria-pressed={visible}
         >
           <NavigationIcon
-            name={visible ? "close" : "search"}
+            name={
+              visible
+                ? "eyeOff"
+                : "eye"
+            }
             size={15}
           />
 

@@ -1,4 +1,8 @@
-import { Link, Outlet, useLocation } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  useLocation
+} from "react-router-dom";
 
 const pageMeta = {
   "/login": {
@@ -58,10 +62,6 @@ function AuthShell() {
           >
             StudyOS
           </Link>
-
-          <span className="auth-shell__brand-subtitle">
-            Academic workspace
-          </span>
         </div>
 
         <div className="auth-shell__copy">
@@ -74,9 +74,9 @@ function AuthShell() {
           </h1>
 
           <p className="auth-shell__text">
-            StudyOS brings planning, focus, research, and
-            your study rhythm into one calm workspace
-            designed for serious work.
+            Planning, focus, research, and your study rhythm
+            belong to one calm workspace designed for serious
+            academic work.
           </p>
         </div>
 
