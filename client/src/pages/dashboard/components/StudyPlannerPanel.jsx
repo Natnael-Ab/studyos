@@ -20,7 +20,6 @@ import {
 
 import {
   TIMER_MODES,
-  createTimerState,
   formatTimer,
   loadTimerState,
   persistTimerState
@@ -65,60 +64,63 @@ function StudyPlannerPanel() {
     }
 
     const intervalId =
-      window.setInterval(() => {
-        setTimer(
-          (current) => {
-            if (
-              current.remainingSeconds <=
-              1
-            ) {
-              const completedFocusBlock =
-                current.mode ===
-                "focus";
+      window.setInterval(
+        () => {
+          setTimer(
+            (current) => {
+              if (
+                current.remainingSeconds <=
+                1
+              ) {
+                const completedFocusBlock =
+                  current.mode ===
+                  "focus";
+
+                return {
+                  mode:
+                    completedFocusBlock
+                      ? "shortBreak"
+                      : "focus",
+
+                  remainingSeconds:
+                    completedFocusBlock
+                      ? TIMER_MODES
+                          .shortBreak
+                          .minutes *
+                        60
+                      : TIMER_MODES
+                          .focus
+                          .minutes *
+                        60,
+
+                  running: false,
+
+                  completedFocusBlocks:
+                    current.completedFocusBlocks +
+                    (
+                      completedFocusBlock
+                        ? 1
+                        : 0
+                    )
+                };
+              }
 
               return {
-                mode:
-                  completedFocusBlock
-                    ? "shortBreak"
-                    : "focus",
+                ...current,
 
                 remainingSeconds:
-                  completedFocusBlock
-                    ? TIMER_MODES
-                        .shortBreak
-                        .minutes *
-                      60
-                    : TIMER_MODES
-                        .focus
-                        .minutes *
-                      60,
-
-                running: false,
-
-                completedFocusBlocks:
-                  current.completedFocusBlocks +
-                  (
-                    completedFocusBlock
-                      ? 1
-                      : 0
-                  )
+                  current.remainingSeconds -
+                  1
               };
             }
+          );
 
-            return {
-              ...current,
-
-              remainingSeconds:
-                current.remainingSeconds -
-                1
-            };
-          }
-        );
-
-        setCurrentTime(
-          Date.now()
-        );
-      }, 1000);
+          setCurrentTime(
+            Date.now()
+          );
+        },
+        1000
+      );
 
     return () => {
       window.clearInterval(
@@ -131,11 +133,14 @@ function StudyPlannerPanel() {
 
   useEffect(() => {
     const minuteIntervalId =
-      window.setInterval(() => {
-        setCurrentTime(
-          Date.now()
-        );
-      }, 60_000);
+      window.setInterval(
+        () => {
+          setCurrentTime(
+            Date.now()
+          );
+        },
+        60_000
+      );
 
     return () => {
       window.clearInterval(
