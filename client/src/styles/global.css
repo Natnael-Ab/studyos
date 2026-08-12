@@ -2,8 +2,7 @@
 @import "./layout.css";
 @import "./type.css";
 @import "./components.css";
-@import "./tokens.css";
-@import "./pages.css";
-@import "./premium.css";
 @import "./feedback.css";
+@import "./pages.css";
+@import "./home.css";
 @import "./utilities.css";
