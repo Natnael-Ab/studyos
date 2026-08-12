@@ -1,21 +1,31 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Badge, Button, Input, SectionHeader, Surface } from "../../components/ui";
+import {
+  Button,
+  Input,
+  Surface
+} from "../../components/ui";
 import { useWorkspaceAccess } from "../../hooks/useWorkspaceAccess";
+import AuthPasswordField from "./components/AuthPasswordField";
 
 function SignupPage() {
   const navigate = useNavigate();
   const { signUp } = useWorkspaceAccess();
+
   const [form, setForm] = useState({
     fullName: "",
     email: "",
     password: "",
     confirmPassword: ""
   });
+
   const [error, setError] = useState("");
 
   function handleChange(event) {
-    const { name, value } = event.target;
+    const {
+      name,
+      value
+    } = event.target;
 
     setForm((current) => ({
       ...current,
@@ -26,39 +36,73 @@ function SignupPage() {
   function handleSubmit(event) {
     event.preventDefault();
 
-    if (!form.fullName.trim() || !form.email.trim() || !form.password.trim()) {
-      setError("Complete all required fields.");
+    if (
+      !form.fullName.trim() ||
+      !form.email.trim() ||
+      !form.password.trim()
+    ) {
+      setError(
+        "Complete the required fields to continue."
+      );
       return;
     }
 
     if (form.password.length < 8) {
-      setError("Use at least 8 characters for the password.");
+      setError(
+        "Use at least 8 characters for your password."
+      );
       return;
     }
 
-    if (form.password !== form.confirmPassword) {
-      setError("Passwords do not match.");
+    if (
+      form.password !==
+      form.confirmPassword
+    ) {
+      setError(
+        "The passwords do not match."
+      );
       return;
     }
 
     setError("");
+
     const nextRoute = signUp({
       fullName: form.fullName,
       email: form.email,
       password: form.password
     });
+
     navigate(nextRoute);
   }
 
   return (
     <Surface className="auth-card">
-      <Badge tone="accent">Create workspace</Badge>
-      <SectionHeader
-        title="Set up your StudyOS account."
-        description="Create your access, verify your email, then finish the setup wizard."
-      />
+      <div className="auth-card__eyebrow">
+        <span className="auth-shell__eyebrow">
+          Create your workspace
+        </span>
 
-      <form className="auth-form" onSubmit={handleSubmit}>
+        <span className="auth-card__step-label">
+          1 of 2
+        </span>
+      </div>
+
+      <div className="auth-card__title-group">
+        <h2 className="auth-card__title">
+          Make study feel simpler from day one.
+        </h2>
+
+        <p className="auth-card__description">
+          Create your account first. We will then verify
+          your email and tailor the workspace around your
+          study rhythm.
+        </p>
+      </div>
+
+      <form
+        className="auth-form"
+        onSubmit={handleSubmit}
+      >
         <Input
           label="Full name"
           name="fullName"
@@ -66,11 +110,12 @@ function SignupPage() {
           onChange={handleChange}
           placeholder="Your name"
           autoComplete="name"
+          autoFocus
           required
         />
 
         <Input
-          label="Email"
+          label="Email address"
           name="email"
           type="email"
           value={form.email}
@@ -80,21 +125,20 @@ function SignupPage() {
           required
         />
 
-        <Input
+        <AuthPasswordField
           label="Password"
           name="password"
-          type="password"
           value={form.password}
           onChange={handleChange}
-          placeholder="Create a strong password"
+          placeholder="Create a password"
           autoComplete="new-password"
+          hint="At least 8 characters."
           required
         />
 
-        <Input
+        <AuthPasswordField
           label="Confirm password"
           name="confirmPassword"
-          type="password"
           value={form.confirmPassword}
           onChange={handleChange}
           placeholder="Repeat your password"
@@ -102,16 +146,36 @@ function SignupPage() {
           required
         />
 
-        {error ? <div className="auth-form__error">{error}</div> : null}
+        {error ? (
+          <div
+            className="auth-form__error"
+            role="alert"
+          >
+            {error}
+          </div>
+        ) : null}
+
+        <div className="auth-card__form-note">
+          <span>
+            One account. One academic workspace.
+          </span>
+
+          <Link to="/login">
+            Already have an account?
+          </Link>
+        </div>
 
         <div className="auth-form__footer">
-          <Button type="submit" variant="primary">
+          <Button
+            type="submit"
+            variant="primary"
+            size="lg"
+          >
             Create account
+            <span aria-hidden="true">
+              ↗
+            </span>
           </Button>
-
-          <div className="auth-form__links">
-            <Link to="/login">Already have an account</Link>
-          </div>
         </div>
       </form>
     </Surface>
