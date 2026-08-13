@@ -164,7 +164,10 @@
 .dashboard-overview {
   display: grid;
   grid-template-columns:
-    repeat(4, minmax(0, 1fr));
+    repeat(
+      4,
+      minmax(0, 1fr)
+    );
   gap: 0.6rem;
   margin-top: 0.7rem;
 }
@@ -369,7 +372,6 @@
   margin: 0;
   color: var(--text);
   font-size: 1rem;
-  letter-spacing: -0.025em;
 }
 
 .dashboard-command__empty p {
@@ -435,7 +437,7 @@
     var(--surface);
 }
 
-/* Section rail */
+/* Internal dashboard navigation */
 
 .dashboard-section-rail {
   position: sticky;
@@ -524,7 +526,7 @@
   background: var(--accent);
 }
 
-/* Deep work sections */
+/* Deep work */
 
 .dashboard-deep-work {
   display: grid;
@@ -546,13 +548,11 @@
   padding-bottom: 0;
 }
 
-.dashboard-section__heading {
-  display: grid;
-}
-
 .dashboard-section__heading-main {
   display: grid;
-  grid-template-columns: 64px minmax(0, 1fr);
+  grid-template-columns:
+    64px
+    minmax(0, 1fr);
   gap: 1.15rem;
   align-items: start;
 }
@@ -614,12 +614,6 @@
   min-width: 0;
 }
 
-/*
-The individual feature surfaces already carry their own
-section labels. Remove their top borders here so a module
-does not visually restart the section twice.
-*/
-
 .dashboard-section__content
   .task-workspace,
 .dashboard-section__content
@@ -639,8 +633,6 @@ does not visually restart the section twice.
   display: none;
 }
 
-/* The section headings now own the module introduction. */
-
 .dashboard-section__content
   .dashboard-detail-section {
   padding-top: 0;
@@ -650,15 +642,6 @@ does not visually restart the section twice.
   .dashboard-detail-section__heading {
   display: none;
 }
-
-/* Plan */
-
-.dashboard-section__content
-  .dashboard-plan {
-  margin-top: 0;
-}
-
-/* Responsive */
 
 @media (max-width: 1080px) {
   .dashboard-command {
@@ -715,7 +698,9 @@ does not visually restart the section twice.
   }
 
   .dashboard-section__heading-main {
-    grid-template-columns: 42px minmax(0, 1fr);
+    grid-template-columns:
+      42px
+      minmax(0, 1fr);
   }
 }
 

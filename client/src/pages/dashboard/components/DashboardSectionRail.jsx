@@ -20,17 +20,23 @@ const sections = [
 ];
 
 function DashboardSectionRail() {
-  const [activeId, setActiveId] =
-    useState(sections[0].id);
+  const [
+    activeId,
+    setActiveId
+  ] = useState(
+    sections[0].id
+  );
 
   useEffect(() => {
-    const elements = sections
-      .map((section) =>
-        document.getElementById(
-          section.id
+    const elements =
+      sections
+        .map(
+          (section) =>
+            document.getElementById(
+              section.id
+            )
         )
-      )
-      .filter(Boolean);
+        .filter(Boolean);
 
     if (!elements.length) {
       return undefined;
@@ -52,10 +58,11 @@ function DashboardSectionRail() {
               );
 
           if (
-            visibleEntries.length > 0
+            visibleEntries.length
           ) {
             setActiveId(
-              visibleEntries[0].target.id
+              visibleEntries[0]
+                .target.id
             );
           }
         },

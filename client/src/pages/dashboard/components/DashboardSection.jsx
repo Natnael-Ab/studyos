@@ -17,6 +17,7 @@ function DashboardSection({
         <div className="dashboard-section__heading-main">
           <div className="dashboard-section__index">
             <span>{index}</span>
+
             <span
               className="dashboard-section__index-line"
               aria-hidden="true"
